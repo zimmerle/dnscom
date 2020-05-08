@@ -19,7 +19,7 @@ Preferable and bolder option to drive the **clients** towards your **server** is
 
 ## Server
 
-This package provides an elementary but expandable server that is capable of loading plugins to process the queries payload. Look at a plugin example here: (plugins example)[plugins/example]. If no plugin is loaded, the server will dump the query payload in the stdout. As illustrated in the example below.
+This package provides an elementary but expandable server that is capable of loading plugins to process the queries payload. Look at a plugin example here: [plugins example](plugins/). If no plugin is loaded, the server will dump the query payload in the stdout. As illustrated in the example below.
 
 ![DNSCON](asciicast.gif)
 
