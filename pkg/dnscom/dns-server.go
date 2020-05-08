@@ -84,11 +84,11 @@ func Server(ip net.IP, returnIP net.IP, plug Plugin) {
 			data, res := process(request, prefixOffset)
 			data2, err := base32.StdEncoding.DecodeString(data)
 			if err != nil {
-				plug.Err(data, err)
 				log.Printf(addr.String()+" Err: %s (Dropped: %s)", data, res)
+				plug.Err(data, err)
 			} else {
-				plug.Ok(strings.Split(addr.String(), ":")[0], string(data2[:]))
 				log.Printf(addr.String()+" %s ", data)
+				plug.Ok(strings.Split(addr.String(), ":")[0], string(data2[:]))
 			}
 			anwser(udpConn, request, addr, returnIP)
 		}
