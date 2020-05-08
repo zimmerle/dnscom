@@ -11,7 +11,7 @@ It is possible to exchange a small portion of data through DNS queries. This met
 
 For the communication to flow, there is a need for two figures: (a) the **server**, (b) the **client**. The **client** is pretty much any application that is capable of resolving names (e.i. perform DNS queries). The **server**, in the order hand, needs to be crafted for that purpose. The **server** is including in this package.
 
-### Making the client reaching the server
+#### Making the client reaching the server
 
 There are multiples ways to make the **client** performing requests on your **server**; the most straightforward one is to use a DNS tool such us: [dnsq](https://cr.yp.to/djbdns/debugging.html), [drill](https://www.nlnetlabs.nl/projects/ldns/about/), or [nslookup](https://dougbarton.us/DNS/bind-users-FAQ.html) to query your server.
 
@@ -23,13 +23,13 @@ This package provides an elementary but expandable server that is capable of loa
 
 ![DNSCON](asciicast.gif)
 
-### Installation
+#### Installation
 
 ```
 go install github.com/zimmerle/dnscom/cmd/dnscom-server
 ```
 
-### Help
+#### Command line Help
 ```
   -ip string
         IP to listen on. (default "127.0.0.1")
@@ -49,7 +49,7 @@ go install github.com/zimmerle/dnscom/cmd/dnscom-server
 
 This package also includes an Encoder, that is pretty much a utility to transform human-readable data to a format that fits a domain/subdomain, hence, queriable via DNS.
 
-### Installation
+#### Installation
 
 ```
 go install github.com/zimmerle/dnscom/cmd/dnscom-encode
