@@ -35,7 +35,7 @@ func anwser(udpConn *net.UDPConn, request *layers.DNS, clientAddr net.Addr, retu
 
 	request.QR = true
 	request.ANCount = 1
-	request.OpCode = layers.DNSOpCodeNotify
+	request.OpCode = layers.DNSOpCodeQuery
 	request.AA = true
 	request.Answers = append(request.Answers, dnsAnswer)
 	request.ResponseCode = layers.DNSResponseCodeNoErr
