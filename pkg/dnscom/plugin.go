@@ -20,6 +20,10 @@ func LoadPlugin(plug string) (Plugin, error) {
 
 	if plug == "" {
 		dnsPlugin = &DefaultPlugin{}
+		err := dnsPlugin.Init()
+		if err != nil {
+			return nil, err
+		}
 
 		return dnsPlugin, nil
 	}
