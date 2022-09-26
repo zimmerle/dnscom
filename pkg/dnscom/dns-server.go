@@ -27,17 +27,24 @@ func newRequest(udpConn *net.UDPConn) (*layers.DNS, net.Addr) {
 }
 
 func anwser(udpConn *net.UDPConn, request *layers.DNS, clientAddr net.Addr, returnIP net.IP) {
-	var dnsAnswer layers.DNSResourceRecord
-	dnsAnswer.Type = layers.DNSTypeA
-	dnsAnswer.IP = returnIP
-	dnsAnswer.Name = request.Questions[0].Name
-	dnsAnswer.Class = layers.DNSClassIN
-
 	request.QR = true
 	request.ANCount = 1
 	request.OpCode = layers.DNSOpCodeQuery
 	request.AA = true
-	request.Answers = append(request.Answers, dnsAnswer)
+
+	for _, question := range request.Questions {
+		var dnsAnswer layers.DNSResourceRecord
+		if question.Type == layers.DNSTypeAAAA {
+			dnsAnswer.IP = net.ParseIP("2600:3c01::f03c:91ff:fe73:5f54")
+		} else {
+			dnsAnswer.IP = returnIP
+		}
+		dnsAnswer.Type = question.Type
+		dnsAnswer.Name = question.Name
+		dnsAnswer.Class = layers.DNSClassIN
+		request.Answers = append(request.Answers, dnsAnswer)
+	}
+
 	request.ResponseCode = layers.DNSResponseCodeNoErr
 
 	buf := gopacket.NewSerializeBuffer()
