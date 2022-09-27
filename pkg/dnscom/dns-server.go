@@ -89,6 +89,8 @@ func Server(ip net.IP, returnIP net.IP, plug Plugin) {
 		request, addr := newRequest(udpConn)
 		if request != nil {
 			data, res := process(request, prefixOffset)
+			padding := (8 - (len(data) % 8)) % 8
+			data = data + strings.Repeat("=", padding)
 			data2, err := base32.StdEncoding.DecodeString(data)
 			if err != nil {
 				log.Printf(addr.String()+" Err: %s (Dropped: %s)", data, res)
