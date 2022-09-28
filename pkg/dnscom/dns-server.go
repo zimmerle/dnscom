@@ -1,8 +1,8 @@
 package dnscom
 
 import (
-	"encoding/base32"
 	"flag"
+	"fmt"
 	"log"
 	"net"
 	"strings"
@@ -51,7 +51,8 @@ func anwser(udpConn *net.UDPConn, request *layers.DNS, clientAddr net.Addr, retu
 	opts := gopacket.SerializeOptions{}
 	var err = request.SerializeTo(buf, opts)
 	if err != nil {
-		panic(err)
+		fmt.Println(err)
+		return
 	}
 	udpConn.WriteTo(buf.Bytes(), clientAddr)
 }
@@ -89,16 +90,19 @@ func Server(ip net.IP, returnIP net.IP, plug Plugin) {
 		request, addr := newRequest(udpConn)
 		if request != nil {
 			data, res := process(request, prefixOffset)
-			padding := (8 - (len(data) % 8)) % 8
-			data = data + strings.Repeat("=", padding)
-			data2, err := base32.StdEncoding.DecodeString(data)
-			if err != nil {
-				log.Printf(addr.String()+" Err: %s (Dropped: %s)", data, res)
-				plug.Err(data, err)
-			} else {
-				log.Printf(addr.String()+" %s ", data)
-				plug.Ok(strings.Split(addr.String(), ":")[0], string(data2[:]))
-			}
+			/*
+				padding := (8 - (len(data) % 8)) % 8
+				data = data + strings.Repeat("=", padding)
+				data2, err := base32.StdEncoding.DecodeString(data)
+				if err != nil {
+					plug.Err(data, err)
+				} else {
+					log.Printf(addr.String()+" %s ", data)
+
+				}
+			*/
+			log.Printf(addr.String()+" Ok: %s (Dropped: %s)", data, res)
+			plug.Ok(strings.Split(addr.String(), ":")[0], data)
 			anwser(udpConn, request, addr, returnIP)
 		}
 	}

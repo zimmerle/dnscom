@@ -19,6 +19,10 @@ type DNSQueryData struct {
 	Ok   bool
 }
 
+func (j DNSQueryData) MarshalBinary() ([]byte, error) {
+	return json.Marshal(j)
+}
+
 // Err call in case of an error.
 func (p *DefaultPlugin) Err(a string, b error) {
 	fmt.Println("E> " + a + ": " + b.Error())
@@ -53,6 +57,10 @@ func (p *DefaultPlugin) Ok(host string, a string) {
 	if err != nil {
 		fmt.Println("E2> " + a + ": " + err.Error())
 		return
+	}
+
+	if err := p.rdb.Set(context.Background(), a+"+dns", dnsqd, 0).Err(); err != nil {
+		panic(err)
 	}
 
 	if err := p.rdb.Publish(context.Background(), "testing", payload).Err(); err != nil {

@@ -30,7 +30,7 @@ func main() {
 		encoded = encoded + "." + strconv.FormatInt(now.Unix(), 10)
 	}
 
-	encoded = strings.ToLower(encoded) + "." + *domain
+	encoded = strings.ToLower(strings.ReplaceAll(encoded, "=", "")) + "." + *domain
 
 	fmt.Println(encoded)
 }
