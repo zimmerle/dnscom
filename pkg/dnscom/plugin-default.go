@@ -23,6 +23,8 @@ func (j DNSQueryData) MarshalBinary() ([]byte, error) {
 	return json.Marshal(j)
 }
 
+var lastOk = ""
+
 // Err call in case of an error.
 func (p *DefaultPlugin) Err(a string, b error) {
 	fmt.Println("E> " + a + ": " + b.Error())
@@ -58,6 +60,11 @@ func (p *DefaultPlugin) Ok(host string, a string) {
 		fmt.Println("E2> " + a + ": " + err.Error())
 		return
 	}
+	if string(payload) == lastOk {
+		fmt.Println("Duplicate.")
+		return
+	}
+	lastOk = string(payload)
 
 	if err := p.rdb.Set(context.Background(), a+"+dns", dnsqd, 0).Err(); err != nil {
 		panic(err)
