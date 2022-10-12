@@ -66,6 +66,11 @@ func (p *DefaultPlugin) Ok(host string, a string) {
 	}
 	lastOk = string(a)
 
+	if a == "" {
+		fmt.Println("Empty payload.")
+		return
+	}
+
 	if err := p.rdb.Set(context.Background(), a+"+dns", dnsqd, 0).Err(); err != nil {
 		panic(err)
 	}
