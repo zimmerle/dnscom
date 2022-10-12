@@ -60,11 +60,11 @@ func (p *DefaultPlugin) Ok(host string, a string) {
 		fmt.Println("E2> " + a + ": " + err.Error())
 		return
 	}
-	if string(payload) == lastOk {
+	if string(a) == lastOk {
 		fmt.Println("Duplicate.")
 		return
 	}
-	lastOk = string(payload)
+	lastOk = string(a)
 
 	if err := p.rdb.Set(context.Background(), a+"+dns", dnsqd, 0).Err(); err != nil {
 		panic(err)
